@@ -14,12 +14,17 @@ if ticker:
         
         # Grab the very last valid numbers
         last_row = df.iloc[-1]
-        price = float(last_row['Close'])
-        # If RSI is empty for today, look back one day
-        rsi_val = df['RSI'].dropna().iloc[-1]
+        price = float(df['Close'].iloc[-1])
+        
+        # Safety check for RSI
+        rsi_series = df['RSI'].dropna()
+        if not rsi_series.empty:
+            rsi_val = float(rsi_series.iloc[-1])
+            rsi_display = f"{rsi_val:.1f}"
+        else:
+            rsi_display = "Calculating..."
         
         st.success(f"Connected to {ticker}!")
         st.subheader(f"Current Price: ${price:,.2f}")
-        st.write(f"RSI Momentum: {rsi_val:.1f}")
-    else:
+        st.write(f"RSI Momentum: {rsi_display}")    else:
         st.error("Please enter a valid stock ticker with at least 1 year of history.")
