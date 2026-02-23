@@ -39,11 +39,11 @@ if ticker:
             st.write("🔴 Price is BELOW the 200-day line (Use Caution)")
     else:
         st.error("Not enough historical data for this ticker.")
-        # --- NEW VOLUME DISPLAY START ---
-        st.divider()
-        vol_ratio = curr_vol / avg_vol
-        if curr_vol > avg_vol:
-            st.subheader(f"Institutional Vol: {vol_ratio:.2f}x 🟢")
-        else:
-            st.subheader(f"Institutional Vol: {vol_ratio:.2f}x ⚪")
-        # --- NEW VOLUME DISPLAY END ---       
+    # --- NEW VOLUME DISPLAY START ---
+    st.divider()
+    vol_ratio = curr_vol / avg_vol
+    if curr_vol > avg_vol:
+        st.subheader(f"Institutional Vol: {vol_ratio:.2f}x 🟢")
+    else:
+        st.subheader(f"Institutional Vol: {vol_ratio:.2f}x ⚪")
+    # --- NEW VOLUME DISPLAY END ---       
