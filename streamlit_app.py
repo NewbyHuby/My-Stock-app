@@ -33,5 +33,16 @@ if ticker:
         else:
             st.write("🔴 Price is BELOW the 200-day line (Use Caution)")
     else:
-        st.error("Not enough historical data for this ticker.")        
+        st.error("Not enough historical data for this ticker.")
+        # Volume Math
+        curr_vol = float(df['Volume'].iloc[-1])
+        avg_vol = float(df['Volume'].rolling(window=20).mean().iloc[-1])
+        vol_ratio = (curr_vol / avg_vol)
         
+        # Add this to your display section (e.g., in a new column or below)
+        st.divider()
+        st.subheader("Volume Analysis")
+        if curr_vol > avg_vol:
+            st.write(f"🟢 High Volume: {vol_ratio:.2f}x the 20-day average.")
+        else:
+            st.write(f"⚪ Low Volume: {vol_ratio:.2f}x the 20-day average.")        
