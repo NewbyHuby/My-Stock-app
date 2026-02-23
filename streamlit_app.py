@@ -7,6 +7,7 @@ ticker = st.text_input("Enter Ticker:", "AAPL").upper()
 
 if ticker:
     df = yf.download(ticker, period="max", interval="1d")
+    df.columns = [col[0] if isinstance(col, tuple) else col for col in df.columns]
     if len(df) > 200:
         df['RSI'] = ta.rsi(df['Close'], length=14)
         df['SMA200'] = ta.sma(df['Close'], length=200)
