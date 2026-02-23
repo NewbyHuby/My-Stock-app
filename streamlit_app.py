@@ -26,5 +26,6 @@ if ticker:
         
         st.success(f"Connected to {ticker}!")
         st.subheader(f"Current Price: ${price:,.2f}")
-        st.write(f"RSI Momentum: {rsi_display}")    else:
-        st.error("Please enter a valid stock ticker with at least 1 year of history.")
+        st.write(f"RSI Momentum: {rsi_display}")
+        else:
+            st.error("Please enter a valid stock ticker with at least 1 year of history.")
