@@ -12,9 +12,11 @@ if ticker:
         df['EMA21'] = ta.ema(df['Close'], length=21)
         df['RSI'] = ta.rsi(df['Close'], length=14)
         df['SMA200'] = ta.sma(df['Close'], length=200)
-        price = float(df['Close'].iloc[-1])
-        rsi_val = float(df['RSI'].iloc[-1])
-        st.metric("Price", f"${price:,.2f}")
-        st.write(f"RSI: {rsi_val:.1f}")
-    else:
-        st.error("Not enough data.")
+        df = df.dropna()
+        if not df.empty:
+            price = float(df['Close'].iloc[-1])
+            rsi_val = float(df['RSI'].iloc[-1])
+            st.subheader(f"{ticker}: ${price:,.2f}")
+            st.write(f"RSI: {rsi_val:.1f}")
+        else:
+            st.error("Calculations failed. Try a different ticker.")
