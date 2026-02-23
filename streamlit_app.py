@@ -13,6 +13,11 @@ if ticker:
         df['SMA200'] = ta.sma(df['Close'], length=200)
         price = float(df['Close'].iloc[-1])
         
+        # --- NEW VOLUME MATH START ---
+        df['Vol_Avg'] = df['Volume'].rolling(window=20).mean()
+        curr_vol = float(df['Volume'].iloc[-1])
+        avg_vol = float(df['Vol_Avg'].iloc[-1])
+        # --- NEW VOLUME MATH END ---
         # Get SMA200
         sma_s = df['SMA200'].dropna()
         sma200 = float(sma_s.iloc[-1]) if not sma_s.empty else 0
@@ -34,15 +39,11 @@ if ticker:
             st.write("🔴 Price is BELOW the 200-day line (Use Caution)")
     else:
         st.error("Not enough historical data for this ticker.")
-        # Volume Math
-        curr_vol = float(df['Volume'].iloc[-1])
-        avg_vol = float(df['Volume'].rolling(window=20).mean().iloc[-1])
-        vol_ratio = (curr_vol / avg_vol)
-        
-        # Add this to your display section (e.g., in a new column or below)
+        # --- NEW VOLUME DISPLAY START ---
         st.divider()
-        st.subheader("Volume Analysis")
+        vol_ratio = curr_vol / avg_vol
         if curr_vol > avg_vol:
-            st.write(f"🟢 High Volume: {vol_ratio:.2f}x the 20-day average.")
+            st.subheader(f"Institutional Vol: {vol_ratio:.2f}x 🟢")
         else:
-            st.write(f"⚪ Low Volume: {vol_ratio:.2f}x the 20-day average.")        
+            st.subheader(f"Institutional Vol: {vol_ratio:.2f}x ⚪")
+        # --- NEW VOLUME DISPLAY END ---       
