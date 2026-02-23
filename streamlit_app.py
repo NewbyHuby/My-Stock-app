@@ -12,7 +12,10 @@ if ticker:
         df['RSI'] = ta.rsi(df['Close'], length=14)
         df['SMA200'] = ta.sma(df['Close'], length=200)
         price = float(df['Close'].iloc[-1])
-        
+        df['EMA9'] = ta.ema(df['Close'], length=9)
+        df['EMA21'] = ta.ema(df['Close'], length=21)
+        ema9 = float(df['EMA9'].iloc[-1])
+        ema21 = float(df['EMA21'].iloc[-1])        
         # --- NEW VOLUME MATH START ---
         df['Vol_Avg'] = df['Volume'].rolling(window=20).mean()
         curr_vol = float(df['Volume'].iloc[-1])
@@ -46,4 +49,16 @@ if ticker:
         st.subheader(f"Institutional Vol: {vol_ratio:.2f}x 🟢")
     else:
         st.subheader(f"Institutional Vol: {vol_ratio:.2f}x ⚪")
-    # --- NEW VOLUME DISPLAY END ---       
+    # --- NEW VOLUME DISPLAY END ---
+    # The "Big 5" Logic Check
+    is_trending = price > sma200 and ema9 > ema21
+    is_momentum = rsi_val > 45 and rsi_val < 70
+    s_volume = curr_vol > avg_vol
+    
+    if is_trending and is_momentum and is_volume:
+        st.balloons()
+        st.success("🔥 HIGH PROBABILITY SETUP: All Big 5 signals are GREEN!")
+    elif is_trending:
+        st.warning("⚡ TRENDING: Trend is good, but waiting for Volume/Momentum.")
+    else:
+        st.info("😴 NO SIGNAL: Criteria not met for a high-probability swing.")
