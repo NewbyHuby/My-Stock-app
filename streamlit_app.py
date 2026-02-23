@@ -16,7 +16,7 @@ if ticker:
         last_row = df.iloc[-1]
         price = float(last_row['Close'])
         # If RSI is empty for today, look back one day
-        \rsi_val = df['RSI'].dropna().iloc[-1]
+        rsi_val = df['RSI'].dropna().iloc[-1]
         
         st.success(f"Connected to {ticker}!")
         st.subheader(f"Current Price: ${price:,.2f}")
